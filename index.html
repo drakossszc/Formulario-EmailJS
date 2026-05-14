@@ -156,7 +156,7 @@
     
     <form id="contact-form" class="form-group">
     <label for="to_email">Tu correo institucional</label>
-    <input type="email" name="to_email" id="to_email" placeholder="santiago.jarav@uniagustiniana.edu.co" required>
+    <input type="email" name="to_email" id="to_email" placeholder="tunombre@correo.com" required>
     <button type="submit" id="submit-btn">Suscribirme</button>
 </form>
 </div>
@@ -164,7 +164,7 @@
 <script>
     (function() {
         // Asegúrate de usar tu PUBLIC KEY real aquí
-        emailjs.init("TU_PUBLIC_KEY_AQUI"); 
+        emailjs.init("baiVRGfOOSw6bii5A"); 
     })();
 
     const btn = document.getElementById('submit-btn');
@@ -175,7 +175,7 @@
         btn.innerText = 'Verificando...';
 
         // Enviamos el formulario directamente
-        emailjs.sendForm('TU_SERVICE_ID', 'TU_TEMPLATE_ID', this)
+        emailjs.sendForm('service_eap49aw', 'template_e5qq19h', this)
             .then(function() {
                 alert('¡Enviado con éxito a santiago.jarav@uniagustiniana.edu.co!');
                 btn.innerText = '¡Listo!';
