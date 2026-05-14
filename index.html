@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Suscripción Newsletter</title>
+    <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/@emailjs/browser@3/dist/email.min.js"></script>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: #f4f7f6;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+        }
+
+        .card {
+            background: white;
+            padding: 2rem;
+            border-radius: 15px;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.1);
+            text-align: center;
+            width: 100%;
+            max-width: 400px;
+        }
+
+        h2 { color: #333; margin-bottom: 10px; }
+        p { color: #666; margin-bottom: 25px; font-size: 0.9rem; }
+
+        .form-group {
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+        }
+
+        input[type="email"] {
+            padding: 12px 15px;
+            border: 2px solid #e1e1e1;
+            border-radius: 8px;
+            outline: none;
+            transition: border-color 0.3s;
+        }
+
+        input[type="email"]:focus {
+            border-color: #4A90E2;
+        }
+
+        button {
+            background-color: #4A90E2;
+            color: white;
+            border: none;
+            padding: 12px;
+            border-radius: 8px;
+            cursor: pointer;
+            font-weight: bold;
+            transition: background 0.3s;
+        }
+
+        button:hover {
+            background-color: #357ABD;
+        }
+
+        #response-msg {
+            margin-top: 15px;
+            font-size: 0.85rem;
+            display: none;
+        }
+    </style>
+</head>
+<body>
+
+<div class="card">
+    <h2>¡Únete al club!</h2>
+    <p>Recibe las mejores actualizaciones directamente en tu bandeja de entrada.</p>
+    
+    <form id="subscribe-form" class="form-group">
+        <input type="email" name="user_email" id="user_email" placeholder="tu@correo.com" required>
+        <button type="submit" id="btn-submit">Suscribirme ahora</button>
+    </form>
+    
+    <div id="response-msg"></div>
+</div>
+
+<script type="text/javascript">
+    // INICIALIZACIÓN: Reemplaza con tu Public Key de EmailJS
+    emailjs.init("TU_PUBLIC_KEY_AQUI");
+
+    const btn = document.getElementById('btn-submit');
+    const msg = document.getElementById('response-msg');
+
+    document.getElementById('subscribe-form').addEventListener('submit', function(event) {
+        event.preventDefault();
+        
+        btn.innerText = 'Enviando...';
+        btn.disabled = true;
+
+        // "service_id" y "template_id" de tu panel EmailJS
+        emailjs.sendForm('TU_SERVICE_ID_AQUI', 'TU_TEMPLATE_ID_AQUI', this)
+            .then(function() {
+                msg.style.display = 'block';
+                msg.style.color = 'green';
+                msg.innerText = '¡Gracias! Revisa tu bandeja de entrada.';
+                btn.innerText = 'Suscribirme ahora';
+                btn.disabled = false;
+                document.getElementById('subscribe-form').reset();
+            }, function(error) {
+                msg.style.display = 'block';
+                msg.style.color = 'red';
+                msg.innerText = 'Error al enviar. Inténtalo de nuevo.';
+                btn.disabled = false;
+            });
+    });
+</script>
+
+</body>
+</html>
