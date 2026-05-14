@@ -154,42 +154,35 @@
     <h2>Newsletter</h2>
     <p>Únete a nuestra lista VIP y recibe contenido exclusivo cada semana.</p>
     
-    <form id="email-form" class="form-group">
-        <label for="user_email">Email</label>
-        <input type="email" name="user_email" id="user_email" placeholder="ejemplo@correo.com" required>
-        <button type="submit" id="submit-btn">Suscribirme</button>
-    </form>
-    
-    <div id="status-msg"></div>
+    <form id="contact-form" class="form-group">
+    <label for="to_email">Tu correo institucional</label>
+    <input type="email" name="to_email" id="to_email" placeholder="santiago.jarav@uniagustiniana.edu.co" required>
+    <button type="submit" id="submit-btn">Suscribirme</button>
+</form>
 </div>
 
 <script>
     (function() {
-        // REEMPLAZA CON TU PUBLIC KEY
-        emailjs.init("TU_PUBLIC_KEY");
+        // Asegúrate de usar tu PUBLIC KEY real aquí
+        emailjs.init("TU_PUBLIC_KEY_AQUI"); 
     })();
 
-    const form = document.getElementById('email-form');
     const btn = document.getElementById('submit-btn');
-    const status = document.getElementById('status-msg');
 
-    form.addEventListener('submit', function(e) {
-        e.preventDefault();
-        btn.innerText = 'Procesando...';
-        btn.style.opacity = '0.7';
+    document.getElementById('contact-form').addEventListener('submit', function(event) {
+        event.preventDefault();
 
+        btn.innerText = 'Verificando...';
+
+        // Enviamos el formulario directamente
         emailjs.sendForm('TU_SERVICE_ID', 'TU_TEMPLATE_ID', this)
-            .then(() => {
-                status.innerText = "¡Suscripción exitosa! 🌴";
-                status.style.color = "#2ecc71";
-                form.reset();
-                btn.innerText = 'Suscribirme';
-                btn.style.opacity = '1';
-            }, (err) => {
-                status.innerText = "Error: Verifica tus credenciales.";
-                status.style.color = "#e74c3c";
-                btn.innerText = 'Reintentar';
-                btn.style.opacity = '1';
+            .then(function() {
+                alert('¡Enviado con éxito a santiago.jarav@uniagustiniana.edu.co!');
+                btn.innerText = '¡Listo!';
+            }, function(error) {
+                console.error('FAILED...', error);
+                alert('Fallo el envío: ' + JSON.stringify(error));
+                btn.innerText = 'Error al enviar';
             });
     });
 </script>
