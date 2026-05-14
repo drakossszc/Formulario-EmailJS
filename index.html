@@ -1,255 +1,373 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Newsletter Premium</title>
-    <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/@emailjs/browser@3/dist/email.min.js"></script>
-    <style>
-    :root {
-        --primary-blue: #4d7cff;
-        --dark-blue: #3a63d2;
-        --accent-gold: #eebc2c;
-        --bg-light: #f0f4ff;
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Gomi-Zoo Newsletter</title>
+
+<script type="text/javascript" src="https://cdn.jsdelivr.net/npm/@emailjs/browser@3/dist/email.min.js"></script>
+
+<style>
+
+:root{
+    --primary-blue:#4d7cff;
+    --dark-blue:#3a63d2;
+    --accent-gold:#eebc2c;
+}
+
+*{
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
+    font-family:'Segoe UI',sans-serif;
+}
+
+body{
+    min-height:100vh;
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    overflow:hidden;
+    background:linear-gradient(135deg,#4d7cff,#5a86ff);
+    position:relative;
+}
+
+/* FONDO ANIMADO */
+
+.floating-candy{
+    position:absolute;
+    font-size:40px;
+    opacity:0.18;
+    animation:float linear infinite;
+    z-index:0;
+}
+
+.c1{ left:5%; animation-duration:12s; font-size:35px; }
+.c2{ left:15%; animation-duration:18s; font-size:50px; }
+.c3{ left:28%; animation-duration:14s; font-size:40px; }
+.c4{ left:40%; animation-duration:20s; font-size:55px; }
+.c5{ left:55%; animation-duration:15s; font-size:38px; }
+.c6{ left:70%; animation-duration:17s; font-size:48px; }
+.c7{ left:82%; animation-duration:13s; font-size:42px; }
+.c8{ left:93%; animation-duration:19s; font-size:36px; }
+
+@keyframes float{
+
+    0%{
+        transform:translateY(120vh) rotate(0deg);
     }
 
-    body {
-        margin: 0;
-        padding: 0;
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        min-height: 100vh;
-        background: var(--primary-blue);
-        font-family: 'Segoe UI', Roboto, sans-serif;
-        overflow: hidden; /* Evita que las formas creen scroll */
-        position: relative;
+    100%{
+        transform:translateY(-150px) rotate(360deg);
     }
+}
 
-    /* --- FONDO DINÁMICO --- */
-    
-    /* Capa de patrón de puntos */
-    body::before {
-        content: "";
-        position: absolute;
-        width: 100%;
-        height: 100%;
-        background-image: radial-gradient(#ffffff22 2px, transparent 2px);
-        background-size: 30px 30px;
-        z-index: 0;
-    }
+/* TARJETA */
 
-    /* Formas geométricas animadas */
-    .shape {
-        position: absolute;
-        background: rgba(255, 255, 255, 0.1);
-        backdrop-filter: blur(5px);
-        border-radius: 30% 70% 70% 30% / 30% 30% 70% 70%;
-        z-index: 0;
-        animation: morph 15s linear infinite alternate;
-    }
+.container{
+    position:relative;
+    background:white;
+    padding:40px;
+    border-radius:28px;
+    box-shadow:0 20px 50px rgba(0,0,0,0.2);
+    width:100%;
+    max-width:420px;
+    overflow:hidden;
+    z-index:2;
+}
 
-    .shape-1 {
-        width: 400px;
-        height: 400px;
-        top: -100px;
-        left: -100px;
-        background: linear-gradient(45deg, var(--accent-gold), transparent);
-        opacity: 0.4;
-    }
+.container::before{
+    content:"🍬";
+    position:absolute;
+    top:-10px;
+    right:-5px;
+    font-size:90px;
+    opacity:0.1;
+    transform:rotate(15deg);
+}
 
-    .shape-2 {
-        width: 300px;
-        height: 300px;
-        bottom: -50px;
-        right: -50px;
-        background: linear-gradient(135deg, var(--dark-blue), #000);
-        opacity: 0.6;
-        animation-duration: 20s;
-        border-radius: 50%;
-    }
+/* ICONOS */
 
-    .shape-3 {
-        width: 150px;
-        height: 150px;
-        top: 20%;
-        right: 15%;
-        background: white;
-        opacity: 0.15;
-        animation: float 8s ease-in-out infinite;
-    }
+.header-icons{
+    display:flex;
+    gap:12px;
+    margin-bottom:25px;
+}
 
-    @keyframes morph {
-        0% { border-radius: 30% 70% 70% 30% / 30% 30% 70% 70%; transform: rotate(0deg); }
-        100% { border-radius: 50% 50% 33% 67% / 55% 27% 73% 45%; transform: rotate(40deg); }
-    }
+.icon-circle{
+    width:18px;
+    height:18px;
+    border-radius:50%;
+}
 
-    @keyframes float {
-        0%, 100% { transform: translateY(0) rotate(0deg); }
-        50% { transform: translateY(-40px) rotate(10deg); }
-    }
+.blue{
+    background:var(--primary-blue);
+}
 
-    /* --- CONTENEDOR (TARJETA) --- */
-    .container {
-        position: relative;
-        background: rgba(255, 255, 255, 0.95);
-        backdrop-filter: blur(10px);
-        padding: 40px;
-        border-radius: 30px;
-        box-shadow: 0 25px 60px rgba(0, 0, 0, 0.3);
-        width: 100%;
-        max-width: 380px;
-        z-index: 10;
-        border: 1px solid rgba(255, 255, 255, 0.3);
-        animation: fadeIn 0.8s ease-out;
-    }
+.yellow{
+    background:var(--accent-gold);
+}
 
-    @keyframes fadeIn {
-        from { opacity: 0; transform: translateY(20px); }
-        to { opacity: 1; transform: translateY(0); }
-    }
+/* TEXTOS */
 
-    /* Estilo decorativo superior */
-    .container::after {
-        content: "";
-        position: absolute;
-        top: 0; left: 0; right: 0;
-        height: 8px;
-        background: linear-gradient(90deg, var(--accent-gold), var(--primary-blue));
-        border-radius: 30px 30px 0 0;
-    }
+h2{
+    color:var(--primary-blue);
+    font-size:42px;
+    font-weight:800;
+    line-height:1.1;
+    margin-bottom:15px;
+}
 
-    .header-icons {
-        display: flex;
-        gap: 15px;
-        margin-bottom: 20px;
-    }
+p{
+    color:#666;
+    line-height:1.7;
+    margin-bottom:30px;
+    font-size:16px;
+}
 
-    /* Animación para los iconos del header */
-    .header-icons svg {
-        animation: pulse 2s infinite;
-    }
+/* BENEFICIOS */
 
-    @keyframes pulse {
-        0%, 100% { transform: scale(1); }
-        50% { transform: scale(1.1); }
-    }
+.benefits{
+    display:flex;
+    flex-direction:column;
+    gap:14px;
+    margin-bottom:30px;
+}
 
-    h2 {
-        color: var(--primary-blue);
-        font-size: 28px;
-        margin-bottom: 8px;
-        font-weight: 900;
-    }
+.benefit{
+    display:flex;
+    align-items:center;
+    gap:15px;
+    border:1px solid #edf2ff;
+    background:#f8faff;
+    padding:15px;
+    border-radius:16px;
+    transition:0.3s;
+}
 
-    p {
-        color: #555;
-        font-size: 0.95rem;
-        margin-bottom: 30px;
-        line-height: 1.5;
-    }
+.benefit:hover{
+    transform:translateY(-3px);
+    box-shadow:0 10px 20px rgba(0,0,0,0.08);
+}
 
-    .form-group {
-        display: flex;
-        flex-direction: column;
-        gap: 20px;
-    }
+.benefit-icon{
+    width:45px;
+    height:45px;
+    background:var(--primary-blue);
+    border-radius:50%;
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    color:white;
+    font-size:20px;
+    flex-shrink:0;
+}
 
-    label {
-        font-size: 0.75rem;
-        font-weight: 800;
-        color: var(--accent-gold);
-        text-transform: uppercase;
-        letter-spacing: 1.5px;
-        margin-bottom: -15px;
-        margin-left: 5px;
-    }
+.benefit-text h3{
+    font-size:17px;
+    color:#333;
+    margin-bottom:4px;
+}
 
-    input[type="email"] {
-        padding: 18px;
-        border: 2px solid #eee;
-        border-radius: 15px;
-        background: #fff;
-        font-size: 1rem;
-        transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-    }
+.benefit-text span{
+    color:#777;
+    font-size:14px;
+}
 
-    input[type="email"]:focus {
-        outline: none;
-        border-color: var(--primary-blue);
-        box-shadow: 0 10px 20px rgba(77, 124, 255, 0.15);
-        transform: scale(1.02);
-    }
+/* FORMULARIO */
 
-    button {
-        background: linear-gradient(135deg, var(--primary-blue), var(--dark-blue));
-        color: white;
-        border: none;
-        padding: 18px;
-        border-radius: 15px;
-        font-size: 1.1rem;
-        font-weight: bold;
-        cursor: pointer;
-        transition: all 0.3s;
-        box-shadow: 0 8px 20px rgba(77, 124, 255, 0.4);
-    }
+.form-group{
+    display:flex;
+    flex-direction:column;
+    gap:18px;
+}
 
-    button:hover {
-        transform: translateY(-3px) scale(1.02);
-        box-shadow: 0 12px 25px rgba(77, 124, 255, 0.5);
-    }
+label{
+    font-size:0.8rem;
+    font-weight:bold;
+    color:var(--accent-gold);
+    text-transform:uppercase;
+    letter-spacing:1px;
+}
 
-    button:active {
-        transform: translateY(0);
-    }
+input[type="email"]{
+    padding:16px;
+    border:2px solid #edf2ff;
+    border-radius:14px;
+    background:#f8faff;
+    font-size:1rem;
+    transition:0.3s;
+}
+
+input[type="email"]:focus{
+    outline:none;
+    border-color:var(--primary-blue);
+    background:white;
+    box-shadow:0 0 0 4px rgba(77,124,255,0.1);
+}
+
+button{
+    background:var(--primary-blue);
+    color:white;
+    border:none;
+    padding:16px;
+    border-radius:14px;
+    font-size:1rem;
+    font-weight:bold;
+    cursor:pointer;
+    transition:0.3s;
+    box-shadow:0 6px 18px rgba(77,124,255,0.4);
+}
+
+button:hover{
+    background:var(--dark-blue);
+    transform:translateY(-2px);
+}
+
+#status-msg{
+    margin-top:18px;
+    text-align:center;
+    color:#666;
+    font-size:14px;
+}
+
 </style>
 </head>
+
 <body>
 
+<!-- DULCES FLOTANTES -->
+
+<div class="floating-candy c1">🍭</div>
+<div class="floating-candy c2">🍬</div>
+<div class="floating-candy c3">🧁</div>
+<div class="floating-candy c4">🍩</div>
+<div class="floating-candy c5">🍫</div>
+<div class="floating-candy c6">🍪</div>
+<div class="floating-candy c7">🍡</div>
+<div class="floating-candy c8">🍭</div>
+
+<!-- TARJETA -->
+
 <div class="container">
+
     <div class="header-icons">
-        <svg width="50" height="50" viewBox="0 0 24 24" fill="var(--primary-blue)">
-            <path d="M17,8C8,10 5.9,16.17 3.82,21.34L5.71,22L6.66,19.7C7.14,19.87 7.64,20 8,20C19,20 22,3 22,3C21,5 14,5.25 9,6.25C4,7.25 2,11.5 2,13.5C2,15.5 3.75,17.25 3.75,17.25C7,11 17,8 17,8Z"/>
-        </svg>
-        <svg width="40" height="40" viewBox="0 0 24 24" fill="var(--accent-gold)">
-            <path d="M21,12.79V11.21L19,10.14L19.5,7.86L17.21,7.36L16.14,5.36L13.86,5.86L12,3.86L10.14,5.86L7.86,5.36L6.79,7.36L4.5,7.86L5,10.14L3,11.21V12.79L5,13.86L4.5,16.14L6.79,16.64L7.86,18.64L10.14,18.14L12,20.14L13.86,18.14L16.14,18.64L17.21,16.64L19.5,16.14L19,13.86L21,12.79Z"/>
-        </svg>
+        <div class="icon-circle blue"></div>
+        <div class="icon-circle yellow"></div>
     </div>
 
-    <h2>Newsletter</h2>
-    <p>Únete a nuestra lista VIP y recibe contenido exclusivo cada semana.</p>
-    
+    <h2>¡Gomi-Zoo! 🍬</h2>
+
+    <p>
+        Únete a nuestra lista VIP y recibe
+        dulces sorpresa, promociones y contenido
+        exclusivo cada semana.
+    </p>
+
+    <!-- BENEFICIOS -->
+
+    <div class="benefits">
+
+        <div class="benefit">
+            <div class="benefit-icon">🎁</div>
+
+            <div class="benefit-text">
+                <h3>Dulces sorpresa</h3>
+                <span>Recibe nuevas golosinas cada semana.</span>
+            </div>
+        </div>
+
+        <div class="benefit">
+            <div class="benefit-icon">⭐</div>
+
+            <div class="benefit-text">
+                <h3>Contenido exclusivo</h3>
+                <span>Accede a sabores y lanzamientos VIP.</span>
+            </div>
+        </div>
+
+        <div class="benefit">
+            <div class="benefit-icon">💖</div>
+
+            <div class="benefit-text">
+                <h3>Promociones especiales</h3>
+                <span>Obtén descuentos y regalos sorpresa.</span>
+            </div>
+        </div>
+
+    </div>
+
+    <!-- FORMULARIO -->
+
     <form id="contact-form" class="form-group">
-    <label for="to_email">Tu correo institucional</label>
-    <input type="email" name="to_email" id="to_email" placeholder="tunombre@correo.com" required>
-    <button type="submit" id="submit-btn">Suscribirme</button>
-</form>
+
+        <label for="to_email">
+            Tu correo institucional
+        </label>
+
+        <input
+            type="email"
+            name="to_email"
+            id="to_email"
+            placeholder="tunombre@correo.com"
+            required
+        >
+
+        <button type="submit" id="submit-btn">
+            🍭 Suscribirme
+        </button>
+
+    </form>
+
+    <div id="status-msg"></div>
+
 </div>
 
 <script>
-    (function() {
-        // Asegúrate de usar tu PUBLIC KEY real aquí
-        emailjs.init("baiVRGfOOSw6bii5A"); 
-    })();
 
-    const btn = document.getElementById('submit-btn');
+(function () {
 
-    document.getElementById('contact-form').addEventListener('submit', function(event) {
-        event.preventDefault();
+    emailjs.init("baiVRGfOOSw6bii5A");
 
-        btn.innerText = 'Verificando...';
+})();
 
-        // Enviamos el formulario directamente
-        emailjs.sendForm('service_eap49aw', 'template_e5qq19h', this)
-            .then(function() {
-                alert('¡Enviado con éxito a santiago.jarav@uniagustiniana.edu.co!');
-                btn.innerText = '¡Listo!';
-            }, function(error) {
-                console.error('FAILED...', error);
-                alert('Fallo el envío: ' + JSON.stringify(error));
-                btn.innerText = 'Error al enviar';
-            });
+const btn = document.getElementById('submit-btn');
+
+document.getElementById('contact-form')
+.addEventListener('submit', function(event){
+
+    event.preventDefault();
+
+    btn.innerText = 'Enviando...';
+
+    emailjs.sendForm(
+        'service_eap49aw',
+        'template_e5qq19h',
+        this
+    )
+
+    .then(function(){
+
+        document.getElementById('status-msg')
+        .innerHTML = "✨ ¡Suscripción realizada con éxito!";
+
+        btn.innerText = '¡Listo!';
+
+    },
+
+    function(error){
+
+        console.error(error);
+
+        document.getElementById('status-msg')
+        .innerHTML = "❌ Error al enviar.";
+
+        btn.innerText = 'Intentar de nuevo';
+
     });
+
+});
+
 </script>
 
 </body>
